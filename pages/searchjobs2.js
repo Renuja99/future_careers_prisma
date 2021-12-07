@@ -88,7 +88,7 @@ const jobsearch = () => {
         
 
         <div className="flex justify-center mt-6 mb-0  m-48" style={{marginTop:'60px'}}>
-            <form className="flex flex-col gap-3 md:flex-row w-full md:w-full  max-w-full md:space-x-3 space-y-3 md:space-y-0 justify-center">
+            <form className="flex flex-col md:flex-row w-full md:w-full  max-w-full md:space-x-3 space-y-3 md:space-y-0 justify-center">
                 <div className="flex flex-col md:flex-row gap-6 relative  ">
                     <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Job title, remote, company name"/>
                     <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Location"/>
@@ -100,7 +100,7 @@ const jobsearch = () => {
         
         </div>
 
-                <div className="w-full lg:w-4/5 h-20 flex justify-center items-center gap-10" style={{ position: "relative", zIndex: "100", marginBottom: '20px'}}>
+                <div className="w-full lg:w-4/5 h-20 flex justify-center items-center gap-0" style={{ position: "relative", zIndex: "100", marginBottom: '20px'}}>
 
 
 
@@ -386,7 +386,7 @@ const jobsearch = () => {
 
 
 
-<div class="w-full  bg-gray-800 " style={{border: '1px solid rgba(229, 231, 235, var(--tw-bg-opacity))', marginBottom: '5px'}}></div>
+<div className="w-full  bg-gray-800 " style={{border: '1px solid rgba(229, 231, 235, var(--tw-bg-opacity))', marginBottom: '5px'}}></div>
 
 
 <div className="flex max-h-screen w-full">
@@ -461,14 +461,14 @@ const jobsearch = () => {
               <button className="ml-6">
                 <span className="leading-normal">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
                     </svg>
                 </span>
               </button>
               <button className="ml-6">
                 <span className="leading-normal">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                 </svg>
                 </span>
               </button>
