@@ -70,7 +70,7 @@ const employeeNavigation = [
   useEffect(()=>{
 
 
-  
+    
 
     // setUserInfoFromLocalStorage(localStorage.getItem("userInfo"))
 
@@ -240,7 +240,7 @@ const employeeNavigation = [
                         <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
                           <Link href="/login">
                           <a href="#" className="whitespace-nowrap text-base font-black text-gray-200 hover:text-green-400">
-                          Sign in {console.log(userData)}
+                          Sign in {}
                           </a>
                           </Link>
                           

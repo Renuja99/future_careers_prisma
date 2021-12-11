@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import {  Transition,Menu,RadioGroup  } from '@headlessui/react'
 import Header from '../components/navbar'
 import {
@@ -15,9 +15,7 @@ import {
   ViewGridIcon,
   XIcon,
 } from '@heroicons/react/outline'
-  import 'tailwindcss/tailwind.css'
-
-
+import 'tailwindcss/tailwind.css'
 import { BriefcaseIcon,
     
     CheckIcon,
@@ -62,7 +60,36 @@ function classNames(...classes) {
 
 const jobsearch = () => {
 
-   
+  const [inputOne, setInputOne] = useState();
+  const [inputTwo, setInputTwo] = useState();
+  const [ job_adverts, setJobAdverts] = useState();
+
+   const handleSubmit= async(e)=>{
+
+      try{
+          
+          e.preventDefault()
+          let url = `/api/search/${inputOne}/${inputTwo}`
+          const response = await fetch( url,{
+            method: 'POST',
+            headers:{
+              'Content-Type':'application/json'
+            }
+          })
+
+          const data = await response.json();
+
+          setJobAdverts(data)
+      }catch(err){
+        console.log(err)
+      }
+    
+   }
+
+
+   useEffect(() => {
+    
+   }, [])
 
     return (
 
@@ -88,10 +115,10 @@ const jobsearch = () => {
         
 
         <div className="flex justify-center mt-6 mb-0  m-48" style={{marginTop:'60px'}}>
-            <form className="flex flex-col md:flex-row w-full md:w-full  max-w-full md:space-x-3 space-y-3 md:space-y-0 justify-center">
+            <form className="flex flex-col md:flex-row w-full md:w-full  max-w-full md:space-x-3 space-y-3 md:space-y-0 justify-center" onSubmit={handleSubmit}>
                 <div className="flex flex-col md:flex-row gap-6 relative  ">
-                    <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Job title, remote, company name"/>
-                    <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Location"/>
+                    <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Job title, remote, company name" onChange={(e)=>setInputOne(e.target.value)}/>
+                    <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Location" onChange={(e)=>setInputTwo(e.target.value)}/>
                 </div>
                     <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
                         Find Jobs
@@ -426,20 +453,20 @@ const jobsearch = () => {
           {/* message component */}
 
           {
-                message ? (
-                  message.map((m, index)=>{
+                job_adverts ? (
+                  job_adverts.map((m, index)=>{
                     return (
                     <div key={index} >
 
                       <button className="rounded-lg bg-white shadow-lg" id="message_component" style={{position:"relative", margin:'10px 5px'}} onClick={()=>{showMessage(m)}}>
                       <a className=" bg-white w-full  border-t flex flex-col rounded-lg" style={{ marginBottom:'10px',padding:'20px 30px', background: 'white', gap: "25px"}}>
                         
-                      <p className="text-sm font-semibold text-gray-900 email__sender round" style={{ }}>{m.sender}</p>
+                      <p className="text-sm font-semibold text-gray-900 email__sender round" style={{ }}>{m.job_title}</p>
                           <div className="flex justify-between" >
-                          <p className="text-sm text-gray-900" >{m.senderEmail}</p>
-                          <p className="text-sm text-gray-500">{m.createdAt}</p>
+                          <p className="text-sm text-gray-900" >{m.job_type_id}</p>
+                          <p className="text-sm text-gray-500">{m.closing_date}</p>
                           </div>
-                          <p className="text-sm text-gray-600 email__text">{m.messageBody}</p>
+                          <p className="text-sm text-gray-600 email__text">{m.job_description}</p>
                       </a>
                       </button>
                     </div>)

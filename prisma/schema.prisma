@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -31,9 +32,8 @@ model Company {
   user         User         @relation(fields: [userId], references: [id])
   userId       Int          @unique
   job_adverts  Job_advert[]
+  company_name String?      @db.VarChar(255)
   company_role String       @db.VarChar(100)
-  firstName    String       @db.VarChar(20)
-  lastName     String       @db.VarChar(20)
   address      String       @db.VarChar(500)
 
 }
@@ -42,8 +42,6 @@ model Job_seeker {
   id                Int                   @id @default(autoincrement())
   user              User                  @relation(fields: [userId], references: [id])
   userId            Int                   @unique
-  firstName         String                @db.VarChar(20)
-  lastName          String                @db.VarChar(20)
   cv_user           Curriculum_Vitae?
   jobAdvertsApplied JobAdvertsOnSeekers[]
 
@@ -61,18 +59,18 @@ model Job_advert {
 
   id               Int                   @id @default(autoincrement())
   job_title        String                @db.VarChar(255)
-  company          Company               @relation(fields: [company_id], references: [id])
-  company_id       Int
+  company          Company?              @relation(fields: [company_id], references: [id])
+  company_id       Int?
   click_count      Int
   job_type_id      Job_type
-  closing_date     DateTime              @default(now())
+  closing_date     DateTime
   job_time_id      Work_hours
   exp_level_id     Exp_level
   min_wage         Int
   max_wage         Int
-  industry_type    Industry_type         @relation(fields: [industry_type_id], references: [id])
+  industry_type    Industry_type?        @relation(fields: [industry_type_id], references: [id])
   industry_type_id Int
-  job_description  String                @db.VarChar(255)
+  job_description  String                @db.Text
   jobSeekers       JobAdvertsOnSeekers[]
 
 }
@@ -99,8 +97,9 @@ model Notification {
 
 model Industry_type {
 
-  id          Int          @id @default(autoincrement())
-  job_adverts Job_advert[]
+  id            Int          @id @default(autoincrement())
+  industry_type String       @db.VarChar(255)
+  job_adverts   Job_advert[]
 
 }
 
