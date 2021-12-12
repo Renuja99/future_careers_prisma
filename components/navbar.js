@@ -15,8 +15,9 @@ const user = {
 }
 const navigation = [
   { name: 'Home', href: '/', current: true },
-  { name: 'Contact Us', href: '#', current: false },
-  { name: 'About Us', href: '#', current: false },
+  { name: 'Search', href: '/contact', current: false },
+  { name: 'About Us', href: '/about', current: false },
+  { name: 'Contact Us', href: '/', current: false}
  
 ]
 
@@ -94,12 +95,12 @@ const employeeNavigation = [
 
 
     return (
-        <Disclosure as="nav" className="bg-gray-800" >
+        <Disclosure as="nav" className="bg-gray-800 " style={{position: 'relative', zIndex: 100}} >
           {({ open }) => (
             <>
-              <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-20  ">
-                  <div className="flex items-center">
+              <div className=" mx-auto px-0 sm:px-0   lg:w-3/4 ">
+                <div className="flex items-center justify-between h-20 ">
+                  <div className="flex items-center ">
                     <div className="flex-shrink-0">
                     <div className="flex">
                     <a href="#">
@@ -127,7 +128,22 @@ const employeeNavigation = [
                             {navigation[0].name}
                           </a>
                           </Link>
-                          <Link href="/organization/newJobAdvert">
+                          <Link href="/searchjobs2">
+                          <a
+                            key={navigation[1].name}
+                            href={navigation[1].href}
+                            className={classNames(
+                              navigation[2].current
+                                ? 'bg-gray-900 text-white'
+                                : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                              'px-3 py-2 rounded-md text-sm font-black'
+                            )}
+                            aria-current={navigation[2].current ? 'page' : undefined}
+                          >
+                            {navigation[1].name}
+                          </a>
+                          </Link>
+                          <Link href="/contact">
                           <a
                             key={navigation[1].name}
                             href={navigation[1].href}
@@ -139,10 +155,10 @@ const employeeNavigation = [
                             )}
                             aria-current={navigation[0].current ? 'page' : undefined}
                           >
-                            {navigation[1].name}
+                            {navigation[3].name}
                           </a>
                           </Link>
-                          <Link href="{item.href}">
+                          <Link href="/about">
                           <a
                             key={navigation[2].name}
                             href={navigation[2].href}

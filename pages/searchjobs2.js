@@ -430,7 +430,7 @@ const jobsearch = () => {
 </div>
 
 
-<main className="flex  max-h-screen  mb-20 pt-10  " style={{width: '1400px'}}>
+<main className="flex  max-h-screen  mb-20 pt-10  " style={{width: '1300px'}}>
 
 
 <div className="relative flex flex-col w-full max-w-lg flex-grow  ">

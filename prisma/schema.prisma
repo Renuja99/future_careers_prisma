@@ -42,16 +42,8 @@ model Job_seeker {
   id                Int                   @id @default(autoincrement())
   user              User                  @relation(fields: [userId], references: [id])
   userId            Int                   @unique
-  cv_user           Curriculum_Vitae?
+  cv_user           String?               @db.Text
   jobAdvertsApplied JobAdvertsOnSeekers[]
-
-}
-
-model Curriculum_Vitae {
-  id          Int        @id @default(autoincrement())
-  job_seeker  Job_seeker @relation(fields: [jobSeekerId], references: [id])
-  jobSeekerId Int        @unique
-  isPublished Boolean    @default(false)
 
 }
 
