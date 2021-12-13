@@ -2,7 +2,8 @@ import 'tailwindcss/tailwind.css'
 import '../styles.css'
 import '../global.css'
 import { UserContext } from '../lib/context'
-  import { useUserData} from '../lib/hooks'
+import { useUserData} from '../lib/hooks'
+import { Toaster } from 'react-hot-toast'
 
 
 function classNames(...classes) {
@@ -18,6 +19,7 @@ function MyApp({ Component, pageProps }) {
 
         <UserContext.Provider value={userData}>
           <Component {...pageProps} />
+          <Toaster />
           
         </UserContext.Provider>
   )

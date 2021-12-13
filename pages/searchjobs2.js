@@ -1,58 +1,12 @@
 import { Fragment, useState, useEffect } from 'react'
 import {  Transition,Menu,RadioGroup  } from '@headlessui/react'
 import Header from '../components/navbar'
-import {
-  BookmarkAltIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  CursorClickIcon,
-  MenuIcon,
-  PhoneIcon,
-  PlayIcon,
-  RefreshIcon,
-  ShieldCheckIcon,
-  SupportIcon,
-  ViewGridIcon,
-  XIcon,
-} from '@heroicons/react/outline'
+import toast from 'react-hot-toast'
+
 import 'tailwindcss/tailwind.css'
 import { BriefcaseIcon,
-    
-    CheckIcon,
-    ChevronDownIcon,
-    CurrencyDollarIcon,
-    LinkIcon,
-    LocationMarkerIcon,
-    PencilIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
-
-
-
-
-const message = [
-    {
-        sender: 'gdg',
-        senderEmail: 'gfgf',
-        messageBody: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus at assumenda enim, culpa consequuntur corporis eaque reiciendis mollitia vero magnam qui quo porro, consectetur sapiente numquam quas facilis! Sapiente ipsa laborum tenetur ab at quas soluta dignissimos possimus '
-    },
-
-    {
-        sender: 'gdg',
-        senderEmail: 'gfgf',
-        messageBody: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus at assumenda enim, culpa consequuntur corporis eaque reiciendis mollitia vero magnam qui quo porro, consectetur sapiente numquam quas facilis! Sapiente ipsa laborum tenetur ab at quas soluta dignissimos possimus '
-    },
-    {
-        sender: 'gdg',
-        senderEmail: 'gfgf',
-        messageBody: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus at assumenda enim, culpa consequuntur corporis eaque reiciendis mollitia vero magnam qui quo porro, consectetur sapiente numquam quas facilis! Sapiente ipsa laborum tenetur ab at quas soluta dignissimos possimus '
-    },
-    {
-        sender: 'gdg',
-        senderEmail: 'gfgf',
-        messageBody: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus at assumenda enim, culpa consequuntur corporis eaque reiciendis mollitia vero magnam qui quo porro, consectetur sapiente numquam quas facilis! Sapiente ipsa laborum tenetur ab at quas soluta dignissimos possimus '
-    }
-]
-
-
+     ChevronDownIcon, LocationMarkerIcon,
+   } from '@heroicons/react/solid'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -60,9 +14,15 @@ function classNames(...classes) {
 
 const jobsearch = () => {
 
-  const [inputOne, setInputOne] = useState();
-  const [inputTwo, setInputTwo] = useState();
+  const [inputOne, setInputOne] = useState('');
+  const [inputTwo, setInputTwo] = useState('');
   const [ job_adverts, setJobAdverts] = useState();
+
+  const [closingDate, setClosingDate] = useState('');
+  const [ jobDescription, setJobDescription] = useState('Click on advertisement to view job details');
+  const [ jobTitle, setJobTitle ] = useState('Job Title')
+  const [ exp_level_id, setExpLevelId] = useState('experience level')
+  const [job_advert_id, setJobAdvertId] = useState('')
 
    const handleSubmit= async(e)=>{
 
@@ -84,6 +44,56 @@ const jobsearch = () => {
         console.log(err)
       }
     
+   }
+
+   const showJobDescription = (m)=>{
+
+    setClosingDate(m.closing_date.split('T'))
+    setJobDescription(m.job_description)
+    setJobTitle(m.job_title)
+    setJobAdvertId(m.id)
+
+   }
+
+   const sendCV = async()=>{
+
+      try{
+         const user_id  = JSON.parse(localStorage.getItem("userInfo"))
+         const response = await fetch( `/api/applyjob/${job_advert_id}/${user_id._id}`,{
+          method: 'POST',
+          headers:{
+            'Content-Type':'application/json'
+          }
+        })  
+
+        const data = await response.json();
+        if(data.message === 'Unsuccess'){
+          toast('You already applied to this advertisement!',
+          {
+            icon: '👏',
+            style: {
+              borderRadius: '10px',
+              background: '#F87171',
+              color: '#fff',
+            },
+          }
+        );
+        }else{
+          toast('Successfully applied!',
+          {
+            icon: '✅',
+            style: {
+              borderRadius: '10px',
+              background: '#333',
+              color: '#fff',
+            },
+          }
+        );
+        }
+       
+      }catch(error){
+          console.log(error)
+      }
    }
 
 
@@ -120,7 +130,7 @@ const jobsearch = () => {
                     <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Job title, remote, company name" onChange={(e)=>setInputOne(e.target.value)}/>
                     <input type="text" id="&quot;form-subscribe-Subscribe" className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-700 w-full lg:w-96 py-2.5 px-4 bg-white text-gray-700 placeholder-gray-600 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent" placeholder="Location" onChange={(e)=>setInputTwo(e.target.value)}/>
                 </div>
-                    <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
+                    <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-red-400 rounded-lg shadow-md hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
                         Find Jobs
                     </button>
             </form>
@@ -458,7 +468,7 @@ const jobsearch = () => {
                     return (
                     <div key={index} >
 
-                      <button className="rounded-lg bg-white shadow-lg" id="message_component" style={{position:"relative", margin:'10px 5px'}} onClick={()=>{showMessage(m)}}>
+                      <button className="rounded-lg bg-white shadow-lg" id="message_component" style={{position:"relative", margin:'10px 5px'}} onClick={()=>{showJobDescription(m)}}>
                       <a className=" bg-white w-full  border-t flex flex-col rounded-lg" style={{ marginBottom:'10px',padding:'20px 30px', background: 'white', gap: "25px"}}>
                         
                       <p className="text-sm font-semibold text-gray-900 email__sender round" style={{ }}>{m.job_title}</p>
@@ -482,52 +492,37 @@ const jobsearch = () => {
 
       <div className=" w-full h-screen flex-1 flex flex-col items-center">
       <div className="relative shadow-lg">
-          <div className="flex items-center px-5 py-2 justify-between  border-b">
           
-            <div className="flex items-center">
-              <button className="ml-6">
-                <span className="leading-normal">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
-                    </svg>
-                </span>
-              </button>
-              <button className="ml-6">
-                <span className="leading-normal">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-                </span>
-              </button>
-            </div>
-          </div>
 
         
           
         </div>
         <div className="p-3 flex-1 overflow-y-auto" style={{ width: '100%'}}>
-
-          dgfgd
+           
           
           <article className="mt-3 px-10 pt-6 pb-8 bg-white  rounded-lg shadow-lg">
-            <div className="flex items-center justify-between">
-              
+            <div className="flex items-center justify-end gap-10">
+                  <div className="mt-2 flex items-center text-xs text-gray-800 font-bold bg-yellow-300 cursor-pointer rounded-lg p-2 px-3" type="button" onClick={sendCV}>
+                    <LocationMarkerIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-800" aria-hidden="true" />
+                    Apply now !
+                  </div>
+                  <div className="mt-2 flex items-center text-xs text-gray-800 font-bold bg-red-300 rounded-lg p-2 px-3">
+                    <LocationMarkerIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-800" aria-hidden="true" />
+                    {closingDate? closingDate[0] : null}
+                  </div>
+                  <div className="mt-2 flex items-center text-xs text-gray-800 font-bold bg-pink-300 rounded-lg p-2 px-3">
+                    <BriefcaseIcon className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-800" aria-hidden="true" />
+                    Share with a friend
+                  </div>
             </div>
             <div className="mt-6 text-gray-800 text-sm">
               <p>
-                fgsggfsssgfgd
+                {jobTitle}
               </p> 
               <p className="mt-4 w-full">
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Aut repellendus, ex corrupti vero nulla numquam possimus molestias necessitatibus alias nostrum adipisci voluptas delectus eos ipsa ab est! Quidem, eum nulla!
-
-
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id aperiam nostrum magnam aliquam dolorum ullam blanditiis sint doloribus fugiat impedit ratione ut labore accusantium voluptatibus, accusamus voluptatum reiciendis quisquam harum! Libero cupiditate enim placeat.
-
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsum fugiat iste voluptas odio cumque, a doloribus ea sapiente doloremque, officia ut deleniti praesentium magnam est iure, nemo temporibus labore maiores. Obcaecati placeat, quisquam voluptatem asperiores earum pariatur quos, ipsa quaerat ipsum dicta quidem explicabo illo reiciendis provident natus, fugit eveniet cupiditate. Vitae nisi possimus dolore ducimus sapiente quod distinctio sed rem expedita vero maxime molestias, hic aspernatur, voluptates quos sunt neque assumenda officiis obcaecati. Atque autem, nesciunt odit recusandae sapiente nostrum quaerat quod pariatur dolorum voluptas ex eius neque voluptate voluptatum, itaque non omnis eveniet in, voluptatibus amet magnam accusantium corporis. Architecto odit odio ratione deleniti quam tempora fugit hic amet nihil quaerat? Doloribus aut repudiandae consectetur ex unde, cumque voluptas vero accusantium enim! Accusantium harum deleniti recusandae minus ipsa quasi sed? Nisi deleniti ipsa sit aliquid rem dolores odit fugit impedit vero. Magni quam alias molestiae officia pariatur facilis.
+               {jobDescription}
               </p>
-              <p className="mt-4 font-semibold text-gray-900 mb-20">Sewmini</p>
+              <p className="mt-4 font-semibold text-gray-900 mb-20"></p>
 
             </div>
           </article>

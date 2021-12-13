@@ -2,7 +2,7 @@ import { useState, useRef } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { useRouter} from 'next/router'
 import Link from 'next/link'
-import { useUserData} from '../lib/hooks'
+import toast from 'react-hot-toast'
 
 const role = [
   {
@@ -85,8 +85,10 @@ export default function login(){
       else if( userInfo.role === 'JOB_SEEKER'){
         router.push(`jobseeker/${userInfo._id}`)
       }
-      else{
-        console.log('user is not an admin')
+      else if(userInfo.role === 'EMPLOYER'){
+        router.push(`/company/${userInfo._id}`)
+      }else{
+        toast.error("This didn't work.")
       }
     
        })
