@@ -3,6 +3,8 @@ import Navbar from '../../components/navbar'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import ReactMarkdown from 'react-markdown'
+import reactMarkdown from 'react-markdown'
+
 
 
 const index = () => {
@@ -97,6 +99,8 @@ function PostManager({preview, cv_user}){
 
 function PostForm({cv_user, preview}){
 
+    const previewStyling = 'py-10 px-10'
+
     const { register, handleSubmit, reset, watch} = useForm({ defaultValues:{},  mode:'onChange' });
 
     const updatePost = async({content, published}) =>{
@@ -108,20 +112,20 @@ function PostForm({cv_user, preview}){
         <form onSubmit={handleSubmit(updatePost)}>
 
             {preview && (
-                <div className="bg-green-200">
-                        <ReactMarkdown>{watch('content')}</ReactMarkdown>
+                <div className={`${previewStyling}`}  >
+                        <ReactMarkdown className="reactMarkDown">{watch('content')}</ReactMarkdown>
                 </div>
                 
             )}
             <div className="flex">
-            <textarea name="content" defaultValue={cv_user} {...register('content')}className="w-full my-10 mb-14" style={ preview? ({display: "none"}):{height:"600px", resize: "none"}}>
+            <textarea name="content" defaultValue={cv_user} {...register('content')} className={`w-full my-0 mb-14 rounded-3xl  ${previewStyling}`} style={ preview ? ({ display:"none"}):{height:"600px", resize: "none"}}>
                 
             </textarea>
 
             
             <aside>
-            <button type="submit" className={preview? ("hidden"):("bg-green-400  inline-flex items-center justify-center w-full px-20 py-5 text-xl font-bold leading-6 text-white   border-transparent rounded-full md:w-auto hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-60 -mr-96 ml-8")}>
-                <h1> Save Changes </h1>
+            <button type="submit" className={preview? ("hidden"):("bg-green-400  inline-flex items-center justify-center w-full px-20 py-5 text-xl font-bold leading-6 text-white  border-transparent rounded-full md:w-auto hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 mt-60 -mr-96 ml-8")}>
+                <p> Save Changes </p>
             </button>
             </aside>
            
