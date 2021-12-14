@@ -5,11 +5,11 @@ import { useUserData } from '../lib/hooks'
 export default function Home() {
 
 
-  const userInfo = useUserData()
+ 
 
   useEffect(()=>{
 
-    console.log(userInfo)
+    
   },[])
   return (
     <div className="">

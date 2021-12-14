@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useState, useContext} from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import { UserContext} from '../lib/context'
 import Link from 'next/link'
 // import NotificationPopover from './notification_popover'
 import { useRouter } from 'next/router'
@@ -36,19 +35,22 @@ const navbar2 = () => {
 
 
   const [ loggedIn, setLoggedIn] = useState(false)
-  const [ userInfoStorage, setUserInfoFromLocalStorage] = useState()
-  const [parsedUserInfo, setParsedUserInfo] = useState()
+  const [ userInfoStorage, setUserInfoFromLocalStorage] = useState('')
 
   const router = useRouter()
 
 
-  const {userData} = useContext(UserContext)
+ 
 
  const adminNavigation = [
   { name: 'Your Profile', href: '#', function: ()=>{ return router.push('/admin')}},
   { name: 'Sets', href: '#', function: ()=>{} },
   { name: 'Sign out', href: '#', function : function() {
-    return setUserInfoFromLocalStorage(localStorage.removeItem("userInfo"))}},
+
+    localStorage.removeItem("userInfo")
+    setUserInfoFromLocalStorage('')
+    router.push('/')
+     }},
   
 
 ]
@@ -56,42 +58,60 @@ const navbar2 = () => {
 const companyNavigation = [
   { name: 'Your Profile', href: '#', function: ()=>{return router.push('/organization/company_dashboard')}},
   { name: 'Settings', href: '#', function: '#' },
-  { name: 'Sign out', href: '#', function: '' },
+  { name: 'Sign out', href: '#', function: function() {
+
+    localStorage.removeItem("userInfo")
+    setUserInfoFromLocalStorage('')
+    setLoggedIn(false)
+    router.push('/')
+     } },
   
 
 ]
 
 const employeeNavigation = [
-  { name: 'Your Profile', href: '#', function: '#'},
-  { name: 'Settings', href: '#', function: '#' },
-  { name: 'Sign ', href: '#', function: '' },
+  { name: 'Your Profile', href: '#', function: ()=>{ return router.push('/admin')}},
+  { name: 'Sets', href: '#', function: ()=>{} },
+  { name: 'Sign out', href: '#', function : function() {
+
+    localStorage.removeItem("userInfo")
+    setUserInfoFromLocalStorage('')
+    setLoggedIn(false)
+    router.push('/')
+     }},
   
 ]
 
   useEffect(()=>{
 
 
+    const getUserInfo = async()=>{
+
+      console.log('use effect is running')
+
+      const getItems = JSON.parse(localStorage.getItem("userInfo"))
+
+      
+
+     console.log(getItems)
     
+        
+     
+        
+      if(getItems){
+      setLoggedIn(true)
+      setUserInfoFromLocalStorage(getItems)
+      }
 
-    // setUserInfoFromLocalStorage(localStorage.getItem("userInfo"))
-
-    
-
-    //  if(userInfoStorage){
-    // const userInfo = JSON.parse(userInfoStorage)
-
-    // setParsedUserInfo(userInfo)
-    //   if(userInfo){
-    //     setLoggedIn(true)
-    //   }
-    
-    //  }else{
-    //    setLoggedIn(false)
-    //  }
-
+      else{
+      setLoggedIn(false)
+      }
    
 
-  }, [])
+    }
+
+    getUserInfo()
+  }, [loggedIn])
 
 
     return (
@@ -204,7 +224,7 @@ const employeeNavigation = [
                                 leaveTo="transform opacity-0 scale-95"
                               >
                                 <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                { parsedUserInfo.userType ==='admin' ? (adminNavigation.map((item) => (
+                                { userInfoStorage.role ==='ADMIN' ? (adminNavigation.map((item) => (
                             <Disclosure.Button
                               key={item.name}
                               as="a"
@@ -218,7 +238,7 @@ const employeeNavigation = [
                             </Disclosure.Button>
                           ))):
                           
-                          (userInfoStorage.userType === 'company' ? (companyNavigation.map(
+                          (userInfoStorage.role === 'COMPANY' ? (companyNavigation.map(
                             (item) => (
                               <Disclosure.Button
                                 key={item.name}
@@ -241,7 +261,9 @@ const employeeNavigation = [
                                 className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700"
                                 
                               >
-                                {item.name}
+                              <button onClick={item.function}>
+                              {item.name}
+                              </button>
                               </Disclosure.Button>
                             )
                           ))
@@ -256,7 +278,7 @@ const employeeNavigation = [
                         <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
                           <Link href="/login">
                           <a href="#" className="whitespace-nowrap text-base font-black text-gray-200 hover:text-green-400">
-                          Sign in {}
+                          Sign in {console.log(loggedIn)}
                           </a>
                           </Link>
                           
