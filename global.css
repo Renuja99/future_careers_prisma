@@ -1903,8 +1903,13 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
-.reactMarkDown .line-break {
-  white-space: pre-wrap;
+.reactTextArea textarea:focus {
+  outline-color: #fff;
+  border-style: hidden;
+}
+
+.reactTextArea input:focus {
+  outline: none !important;
 }
 
 .hover\:bg-gray-600:hover{

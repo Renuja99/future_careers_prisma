@@ -4,12 +4,12 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import remarkParse from 'remark-parse'
+import rehypeRaw from 'rehype-raw'
 
 
 const index = () => {
 
-    const [preview, setPreview] = useState(false);
+    const [preview, setPreview] = useState(true);
 
     const [cv_user, setCV] = useState()
 
@@ -106,7 +106,7 @@ function PostForm({cv_user, preview}){
 
     const previewStyling = 'py-10 px-10'
 
-   
+    const [previewText, setPreviewText] = useState(modifiedText)
 
     const { register, handleSubmit, reset, watch} = useForm({ defaultValues:{},  mode:'onChange' });
 
@@ -114,8 +114,17 @@ function PostForm({cv_user, preview}){
 
     }
 
+   
 
- 
+
+    const replaceText = ()=>{
+
+        
+
+        return cv_user.replace(/<br>/g, "<br>\r\n")
+    }
+
+    const modifiedText = replaceText()
 
     return (
 
@@ -123,12 +132,14 @@ function PostForm({cv_user, preview}){
 
             { preview && (
                 <div className={`${previewStyling}`}  >
-                        <ReactMarkdown className="reactMarkDown line-break" remarkPlugins={[remarkGfm]} parserOptions={{commonmark:true}} source={cv_user}>{cv_user? (watch('content')): null}</ReactMarkdown>
+                        <ReactMarkdown className="reactMarkDown line-break" remarkPlugins={[remarkGfm]}  skipHtml={true} 
+                        rehypePlugins={[rehypeRaw]} >{modifiedText.replace(/<br>/g, "")}</ReactMarkdown>
                 </div>
                 
             )}
             <div className="flex">
-            <textarea name="content" defaultValue={cv_user} {...register('content')} className={`w-full my-0 mb-14 rounded-3xl  ${previewStyling}`} style={ preview ? ({ display:"none"}):{height:"600px", resize: "none"}}>
+            <textarea id="text-area" name="content" defaultValue={modifiedText} {...register('content')} className={`w-full my-0 mb-14 rounded-3xl reactTextArea ${previewStyling}`} style={ preview ? ({ display:"none"}):{height:"600px", resize: "none"}}  cols="100"
+            onLoad={(e)=>{setPreviewText(e.target.value.replace(/<br>/g, ""))}}>
                
             </textarea>
 
